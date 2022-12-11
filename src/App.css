@@ -51,8 +51,13 @@ body {
     /* 3 */
 }
 
-.main-nav {
+.navRightSide {
     display: flex;
+    justify-content: space-around;
+}
+
+.main-nav {
+    display: block;
     justify-content: space-between;
     align-items: center;
     padding: 5px 20px;
@@ -79,7 +84,7 @@ body {
 
 .main-nav-item {
     text-decoration: none;
-    margin-right: 0.5rem;
+    margin-left: 1.5rem;
 }
 
 .main-nav-item:hover {
@@ -308,6 +313,12 @@ body {
     .transaction-button {
         width: 200px;
     }
+
+    /** Responsive Nav **/
+    .main-nav {
+        display: flex;
+    }
+
 }
 
 /************************ Edit name of user *************************/

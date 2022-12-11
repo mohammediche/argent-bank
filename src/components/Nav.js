@@ -1,41 +1,49 @@
-import React from 'react';
+import React from "react";
+// import { useSelector } from "react-redux";
 
-const Nav = () => {
+const Nav = (props) => {
   const userConnected = localStorage.getItem("token");
+  /* const userConnected = useSelector((state) => state.name.token); */
 
-   const signOut = ()=>{
-     localStorage.clear();
-   }
+  const signOut = () => {
+    localStorage.clear();
+  };
 
-    return (
-        <div>
-              <nav className="main-nav">
+  return (
+    <header>
+      <nav className="main-nav">
+        <a className="main-nav-logo" href="/">
+          <img className="main-nav-logo-image" src="./img/argentBankLogo.png" alt="Argent Bank Logo" />
+          <h1 className="sr-only">Argent Bank</h1>
+        </a>
 
-                 <a className="main-nav-logo" href="/">
-                   <img
-                     className="main-nav-logo-image"
-                     src="./img/argentBankLogo.png"
-                     alt="Argent Bank Logo"
-                   />
-                   <h1 className="sr-only">Argent Bank</h1>
-                 </a>
+        {userConnected ? (
+          <div className="navRightSide">
+            <a className="main-nav-item" href="/profile">
+              <i className="fa fa-user-circle"></i>
+              <p>{props.firstName}</p>
+            </a>
 
-                
-                   {userConnected ? 
-                   <a className="main-nav-item" href="/login" onClick={signOut}>
-                    <i className="fa fa-arrow-right-from-bracket"></i>
-                    <img src="/img/logout.svg" alt="" className='logout'/>     
-                                   Sign out
-                   </a> : 
-                    <div className='nav-signIn-register'>
-                         <a className="main-nav-item" href="/login"> Sign In </a>
-                         <a className="main-nav-item" href="/register"> Register </a>
-                   </div>}
-               
-
-              </nav>
-        </div>
-    );
+            <a className="main-nav-item" href="/login" onClick={signOut}>
+              <img src="/img/logout.svg" alt="" className="logout" />
+              Sign out
+            </a>
+          </div>
+        ) : (
+          <div className="nav-signIn-register">
+            <a className="main-nav-item" href="/login">
+              {" "}
+              Sign In{" "}
+            </a>
+            <a className="main-nav-item" href="/register">
+              {" "}
+              Register{" "}
+            </a>
+          </div>
+        )}
+      </nav>
+    </header>
+  );
 };
 
 export default Nav;
