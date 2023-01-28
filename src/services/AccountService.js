@@ -1,19 +1,14 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // useDispatch permet de déclancher les actions du reducer
-import { getToken, getUserData } from "../feature/user.action"; // useSelector permet de faire appel au donnée du store
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const AccountService = (email, password, firstName, lastName) => {
+const AccountService = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
   // const myToken = useSelector((state) => state.name.token);
 
-  const submitRegister = (e) => {
-    e.preventDefault();
-
-    axios
-      .post(`${BASE_URL}/signup`, {
+  const submitRegister = async (firstName, lastName, email, password) => {
+    return await axios
+      .post(`${BASE_URL}/sigup`, {
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -21,46 +16,50 @@ const AccountService = (email, password, firstName, lastName) => {
       })
       .then((res) => {
         navigate("/login");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
       });
   };
-  const submitLogin = (e) => {
-    e.preventDefault();
-
-    axios
+  const submitLogin = async (emailLogin, passwordLogin) => {
+    return await axios
       .post(`${BASE_URL}/login`, {
-        email: email,
-        password: password,
+        email: emailLogin,
+        password: passwordLogin,
       })
       .then((res) => {
-        localStorage.setItem("token", res.data.body.token);
-        dispatch(getToken(res.data.body.token));
-        let token = res.data.body.token;
-        // crée une autre fonction pour le token et faire le dispatch ici qui contient le token
-        getUserInfo(token);
-        // window.location.reload(false);
+        return res.data.body.token;
       })
       .catch((error) => {
         console.log(error);
         alert("erreur, username ou le mot de passe n'existe pas");
       });
   };
-  const getUserInfo = (token) => {
+  const getUserInfo = async (token) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
 
-    axios.post(`${BASE_URL}/profile`, {}, config).then((res) => {
-      dispatch(getUserData(res.data.body));
+    return await axios.post(`${BASE_URL}/profile`, {}, config).then((res) => {
+      return res.data.body;
     });
   };
-  const editProfile = (e) => {
-    e.preventDefault();
+  const editProfile = async (firstNameEdit, lastNameEdit, token) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    console.log(token);
 
-    axios
-      .put(`${BASE_URL}/profile`, {
-        firstName,
-        lastName,
-      })
+    return await axios
+      .put(
+        `${BASE_URL}/profile`,
+        {
+          firstNameEdit,
+          lastNameEdit,
+        },
+        config
+      )
       .then((res) => {
         alert("modification réalisé avec succés !");
       })
@@ -68,7 +67,22 @@ const AccountService = (email, password, firstName, lastName) => {
       .catch((error) => console.log(error));
   };
 
-  return { submitLogin, submitRegister, editProfile, getUserInfo };
+  return { submitRegister, submitLogin, getUserInfo, editProfile };
 };
 
 export default AccountService;
+
+// export const submitLogin = (email, password) => {
+//   axios
+//     .post(`${BASE_URL}/login`, {
+//       email: email,
+//       password: password,
+//     })
+//     .then((res) => {
+//       return res.data.body.token;
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       alert("erreur, username ou le mot de passe n'existe pas");
+//     });
+// };

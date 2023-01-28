@@ -8,7 +8,13 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const account = AccountService(email, password, firstName, lastName);
+  const account = AccountService();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const register = await account.submitRegister(firstName, lastName, email, password);
+    console.log(register);
+  };
 
   return (
     <div>
@@ -18,7 +24,7 @@ const Register = () => {
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Register</h1>
 
-          <form onSubmit={account.submitRegister}>
+          <form onSubmit={handleRegister}>
             <div className="input-wrapper">
               <label htmlFor="firstName">FirstName</label>
               <input

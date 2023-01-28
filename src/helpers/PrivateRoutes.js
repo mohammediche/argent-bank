@@ -1,8 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const PrivateRoutes = ({ children }) => {
-  const authToken = localStorage.getItem("token");
-  return authToken ? children : <Navigate to={"/login"}></Navigate>;
+  const isConnected = useSelector((state) => state.status);
+
+  if (isConnected) {
+    return children;
+  } else {
+    return <Navigate to={"/login"}></Navigate>;
+  }
+  // return isConnected ? children : <Navigate to={"/login"}></Navigate>;
 };
 export default PrivateRoutes;

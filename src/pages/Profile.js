@@ -1,23 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import AccountService from "../services/AccountService";
-import { useSelector } from "react-redux";
+// import { editProfileSlice } from "../feature/user.action";
 
 const Profile = () => {
   const [showFormEditName, setShowFormEditName] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-  const account = AccountService();
+  const userData = useSelector((state) => state.user.user); // useSelector permet de faire appel au donnée du store
+  console.log("user data => ", userData);
 
-  const userData = useSelector((state) => {
-    console.log("state user profile :", state);
-    // return state.name.user;
-  }); // useSelector permet de faire appel au donnée du store
-  console.log("profile page, user data : ", userData);
-
-  // useEffect(() => {
-  //   account.getUserInfo();
-  // }, []);
+  useEffect(() => {
+    if (userData) {
+      setFirstName(userData.firstName);
+      setLastName(userData.lastName);
+    }
+  }, [userData]);
 
   // open / close edit profileForm (firstName + lastName)
   const handleShowFormEditProfile = () => {
@@ -28,9 +28,6 @@ const Profile = () => {
     setShowFormEditName(!showFormEditName);
     // window.location.reload(false);
   };
-
-  // crée une fonction handleeditProfil qui va etre appeler dans le submit,  qui vas appeler le service (F editProfile), si return 200,
-  // tu appelle handleShowFormEditProfile(), sinon catch error
 
   return (
     <div>
@@ -49,30 +46,32 @@ const Profile = () => {
         </div>
 
         {showFormEditName && (
-          <form className="editName" onSubmit={account.editProfile}>
+          <form className="editName">
+            {" "}
+            {/*onSubmit={editProfile}, */}
             <div>
               <input
                 className="editFirstName editInput"
                 onChange={(e) => {
-                  // dispatch(editUserData(e.target.value));
+                  setFirstName(e.target.value);
                 }}
-                value={userData?.firstName}
+                value={firstName}
                 type="text"
-                placeholder={userData?.firstName}
+                placeholder={firstName}
                 required
               />
               <input
                 className="editLastName editInput"
                 onChange={(e) => {
+                  setLastName(e.target.value);
                   // dispatch(editUserData(e.target.value));
                 }}
-                value={userData?.lastName}
+                value={lastName}
                 type="text"
-                placeholder={userData?.lastName}
+                placeholder={lastName}
                 required
               />
             </div>
-
             <div className="save-cancel-buttons">
               <button className="saveEdit buttonsSaveCancel">Save</button>
               <button className="cancelEdit buttonsSaveCancel" onClick={cancelEdit}>

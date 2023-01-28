@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { getUserData, getToken } from "./user.action";
+import { getUserData, getToken } from "./user.action"; // editProfileSlice
 
 // export const userSlice = createSlice({
 //   name: "user",
@@ -25,9 +25,11 @@ import { getUserData, getToken } from "./user.action";
 //     // récup le token
 //   },
 // });
+// export const { getUserData, addUser, editUserData, getToken } = userSlice.actions;
 const initialState = {
   user: null,
   token: "",
+  status: false,
 };
 
 export const userSlice = createReducer(initialState, (builder) => {
@@ -35,13 +37,16 @@ export const userSlice = createReducer(initialState, (builder) => {
     .addCase(getUserData, (state, action) => {
       // action sont les données qu'on récupére du paramétre
       state.user = action.payload;
-      console.log("on function getUserData: ", state.user);
+      state.status = true;
     })
     .addCase(getToken, (state, action) => {
       state.token = action.payload;
-      console.log("on function getToken: ", state.token.token);
     });
+
+  // .addCase(editProfileSlice, (state, action) => {
+  //   state.user.firstName = action.payload.firstName;
+  //   state.user.lastName = action.payload.lastName;
+  // });
 });
-// export const { getUserData, addUser, editUserData, getToken } = userSlice.actions;
 
 export default userSlice;

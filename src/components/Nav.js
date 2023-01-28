@@ -1,9 +1,8 @@
 import React from "react";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Nav = (props) => {
-  const userConnected = localStorage.getItem("token");
-  /* const userConnected = useSelector((state) => state.name.token); */
+  const isConnected = useSelector((state) => state.status);
 
   const signOut = () => {
     localStorage.clear();
@@ -17,7 +16,7 @@ const Nav = (props) => {
           <h1 className="sr-only">Argent Bank</h1>
         </a>
 
-        {userConnected ? (
+        {isConnected ? (
           <div className="navRightSide">
             <a className="main-nav-item" href="/profile">
               <i className="fa fa-user-circle"></i>

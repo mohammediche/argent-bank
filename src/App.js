@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import Undefined from "./pages/Undefined.js";
 import PrivateRoutes from "./helpers/PrivateRoutes";
+import { useSelector } from "react-redux";
 
 function App() {
   /* une fois Redux intégrer, faire la condition avec redux et non avec localStorage
@@ -24,17 +25,17 @@ function App() {
   //     return Promise.reject(error);
   //   }
   // );
+  const isConnected = useSelector((state) => state.status);
 
+  const test = useSelector((state) => console.log("ici", state));
+  console.log(test);
   return (
     <BrowserRouter>
       <Routes>
         <>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={localStorage.getItem("token") ? <Navigate to={"/profile"} /> : <Login />} />
-          <Route
-            path="/register"
-            element={localStorage.getItem("token") ? <Navigate to={"/profile"} /> : <Register />}
-          />
+          <Route path="/login" element={isConnected ? <Navigate to={"/profile"} /> : <Login />} />
+          <Route path="/register" element={isConnected ? <Navigate to={"/profile"} /> : <Register />} />
           <Route
             path="/profile"
             element={

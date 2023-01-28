@@ -1,14 +1,34 @@
-import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import AccountService from "../services/AccountService";
+import { getToken, getUserData } from "../feature/user.action";
 
 const Login = () => {
-  // const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const account = AccountService(email, password);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const account = AccountService();
+
+  const [email, setEmail] = useState("steve@rogers.com");
+  const [password, setPassword] = useState("password456");
+  const isConnected = useSelector((state) => state.status);
+
+  useEffect(() => {
+    if (isConnected) {
+      navigate("/profile");
+    }
+  }, [isConnected, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = await account.submitLogin(email, password);
+    dispatch(getToken(token));
+    const data = await account.getUserInfo(token);
+    dispatch(getUserData(data));
+  };
 
   return (
     <div>
@@ -18,7 +38,7 @@ const Login = () => {
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
 
-          <form onSubmit={account.submitLogin}>
+          <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
               <label htmlFor="email">Email</label>
               <input
