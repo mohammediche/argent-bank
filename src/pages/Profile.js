@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import AccountService from "../services/AccountService";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { editProfileSlice } from "../feature/user.action";
 // import { editProfileSlice } from "../feature/user.action";
 
 const Profile = () => {
@@ -9,7 +11,10 @@ const Profile = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const userData = useSelector((state) => state.user.user); // useSelector permet de faire appel au donnée du store
+  const account = AccountService();
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.data.user.user); // useSelector permet de faire appel au donnée du store
+  const token = useSelector((state) => state.data.token.token);
   console.log("user data => ", userData);
 
   useEffect(() => {
@@ -22,11 +27,16 @@ const Profile = () => {
   // open / close edit profileForm (firstName + lastName)
   const handleShowFormEditProfile = () => {
     setShowFormEditName(!showFormEditName);
+    // window.location.reload(false);
   };
 
-  const cancelEdit = () => {
-    setShowFormEditName(!showFormEditName);
-    // window.location.reload(false);
+  const editProfile = async (e) => {
+    e.preventDefault();
+
+    const editedData = await account.editProfile(firstName, lastName, token);
+    console.log("editedData fonction =>", editedData);
+    dispatch(editProfileSlice(editedData));
+    handleShowFormEditProfile();
   };
 
   return (
@@ -38,7 +48,7 @@ const Profile = () => {
           <h1>
             Welcome back
             <br />
-            {userData?.firstName} {userData?.lastName}!
+            {firstName} {lastName}!
           </h1>
           <button className="edit-button" onClick={handleShowFormEditProfile}>
             Edit Name
@@ -46,9 +56,7 @@ const Profile = () => {
         </div>
 
         {showFormEditName && (
-          <form className="editName">
-            {" "}
-            {/*onSubmit={editProfile}, */}
+          <form className="editName" onSubmit={editProfile}>
             <div>
               <input
                 className="editFirstName editInput"
@@ -74,7 +82,7 @@ const Profile = () => {
             </div>
             <div className="save-cancel-buttons">
               <button className="saveEdit buttonsSaveCancel">Save</button>
-              <button className="cancelEdit buttonsSaveCancel" onClick={cancelEdit}>
+              <button className="cancelEdit buttonsSaveCancel" onClick={handleShowFormEditProfile}>
                 Cancel
               </button>
             </div>

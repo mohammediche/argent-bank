@@ -25,10 +25,7 @@ function App() {
   //     return Promise.reject(error);
   //   }
   // );
-  const isConnected = useSelector((state) => state.status);
-
-  const test = useSelector((state) => console.log("ici", state));
-  console.log(test);
+  const isConnected = useSelector((state) => state.data.status);
   return (
     <BrowserRouter>
       <Routes>

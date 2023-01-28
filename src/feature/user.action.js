@@ -13,10 +13,10 @@ const getToken = createAction("data/token", (token) => ({
     token,
   },
 }));
-// const editProfileSlice = createAction("data/edit", (data) => ({
-//   payload: {
-//     data,
-//   },
-// }));
+const editProfileSlice = createAction("data/edit", (data) => ({
+  payload: {
+    data,
+  },
+}));
 
-export { getUserData, getToken }; // editProfileSlice
+export { getUserData, getToken, editProfileSlice };

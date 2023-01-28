@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const PrivateRoutes = ({ children }) => {
-  const isConnected = useSelector((state) => state.status);
+  const isConnected = useSelector((state) => state.data.status);
 
   if (isConnected) {
     return children;

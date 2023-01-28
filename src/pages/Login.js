@@ -27,6 +27,7 @@ const Login = () => {
     const token = await account.submitLogin(email, password);
     dispatch(getToken(token));
     const data = await account.getUserInfo(token);
+    console.log(data);
     dispatch(getUserData(data));
   };
 

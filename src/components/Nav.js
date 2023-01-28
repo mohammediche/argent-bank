@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Nav = (props) => {
-  const isConnected = useSelector((state) => state.status);
+  const isConnected = useSelector((state) => state.data.status);
 
   const signOut = () => {
     localStorage.clear();

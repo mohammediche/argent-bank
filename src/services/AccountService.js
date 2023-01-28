@@ -8,7 +8,7 @@ const AccountService = () => {
 
   const submitRegister = async (firstName, lastName, email, password) => {
     return await axios
-      .post(`${BASE_URL}/sigup`, {
+      .post(`${BASE_URL}/signup`, {
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -45,23 +45,23 @@ const AccountService = () => {
       return res.data.body;
     });
   };
-  const editProfile = async (firstNameEdit, lastNameEdit, token) => {
+  const editProfile = async (firstName, lastName, token) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    console.log(token);
 
     return await axios
       .put(
         `${BASE_URL}/profile`,
         {
-          firstNameEdit,
-          lastNameEdit,
+          firstName,
+          lastName,
         },
         config
       )
       .then((res) => {
         alert("modification réalisé avec succés !");
+        return res.data.body;
       })
 
       .catch((error) => console.log(error));
