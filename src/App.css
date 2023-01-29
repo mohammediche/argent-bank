@@ -85,6 +85,8 @@ body {
 .main-nav-item {
     text-decoration: none;
     margin-left: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
 .main-nav-item:hover {

@@ -1,11 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "../feature/user.action";
 
 const Nav = (props) => {
+  const dispatch = useDispatch();
   const isConnected = useSelector((state) => state.data.status);
 
-  const signOut = () => {
-    localStorage.clear();
+  const handleSignOut = () => {
+    dispatch(signOut());
   };
 
   return (
@@ -18,15 +20,15 @@ const Nav = (props) => {
 
         {isConnected ? (
           <div className="navRightSide">
-            <a className="main-nav-item" href="/profile">
+            <p className="main-nav-item">
               <i className="fa fa-user-circle"></i>
               <p>{props.firstName}</p>
-            </a>
+            </p>
 
-            <a className="main-nav-item" href="/login" onClick={signOut}>
+            <p className="main-nav-item" onClick={handleSignOut}>
               <img src="/img/logout.svg" alt="" className="logout" />
               Sign out
-            </a>
+            </p>
           </div>
         ) : (
           <div className="nav-signIn-register">

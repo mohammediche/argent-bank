@@ -18,5 +18,10 @@ const editProfileSlice = createAction("data/edit", (data) => ({
     data,
   },
 }));
+const signOut = createAction("data/signOut", (data) => ({
+  payload: {
+    data,
+  },
+}));
 
-export { getUserData, getToken, editProfileSlice };
+export { getUserData, getToken, editProfileSlice, signOut };

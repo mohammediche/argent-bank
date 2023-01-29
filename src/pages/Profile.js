@@ -13,10 +13,10 @@ const Profile = () => {
 
   const account = AccountService();
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.data.user.user); // useSelector permet de faire appel au donnée du store
+  const userData = useSelector((state) => state.data.user); // useSelector permet de faire appel au donnée du store
+  // const test = useSelector((state) => state.data);
   const token = useSelector((state) => state.data.token.token);
-  console.log("user data => ", userData);
-
+  console.log("userData =>", userData);
   useEffect(() => {
     if (userData) {
       setFirstName(userData.firstName);
